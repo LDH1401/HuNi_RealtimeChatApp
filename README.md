@@ -1,2 +1,3 @@
 # Web Chat
-![Demo](./images/demo.png)
+
+![Trang đăng kí](./images/signUp.png)
