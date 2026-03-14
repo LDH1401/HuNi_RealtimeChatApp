@@ -19,10 +19,10 @@ export const signUp = async (req, res) => {
         }
 
         const duplicate = await User.findOne({ username })
+
         if(duplicate) {
             return res.status(409).json({ message: "Tên tài khoản đã tồn tại" })
         }
-
 
         const hashPassword = await bcrypt.hash(password, 10) // Băm mật khẩu với salt rounds là 10
 

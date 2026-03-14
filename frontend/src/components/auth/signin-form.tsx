@@ -6,7 +6,8 @@ import { Button } from "../ui/button"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-
+import { useAuthStore } from "@/stores/useAuthStore"
+import { useNavigate } from "react-router"
 const signInSchema = z.object({
     username: z.string().min(6, "Tên đăng nhập phải có ít nhất 6 kí tự"),
     password: z.string().min(8, "Mật khẩu phải có ít nhất 8 kí tự")
@@ -16,13 +17,18 @@ type SignInFormVadidate = z.infer<typeof signInSchema>
 
 
 export function SignInForm({className,...props}: React.ComponentProps<"div">) {
-
+  const {signIn} = useAuthStore()
+  const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors, isSubmitting }} = useForm<SignInFormVadidate>({
     resolver: zodResolver(signInSchema)
   })
 
   const onSubmit = async (data: SignInFormVadidate) => {
-    // api
+    const {username, password} = data;
+
+    await signIn(username, password)
+
+    navigate("/");
   }
 
   return (

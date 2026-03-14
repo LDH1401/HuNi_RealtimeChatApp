@@ -3,6 +3,7 @@ import User from '../models/User.js'
 
 export const protectedRoute = (req, res, next) => {
     try{
+        
         // lấy token từ header
         const authHeader = req.headers['authorization']
         const token = authHeader && authHeader.split(' ')[1];

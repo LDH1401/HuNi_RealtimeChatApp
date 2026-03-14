@@ -5,6 +5,7 @@ import authRoute from './routes/authRoute.js';
 import userRoute from './routes/useRoute.js'
 import cookieParser from 'cookie-parser'
 import { protectedRoute } from "./middlewares/authMiddleware.js";
+import cors from "cors"; 
 
 dotenv.config(); // Load biến môi trường từ file .env
 
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 5001; // APP nhận requets trên cổng 3000 h
 
 app.use(express.json()); // Middleware để phân tích JSON trong body của yêu cầu
 app.use(cookieParser())
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true}))
 
 //public routes
 app.use("/api/auth", authRoute); // Các request đến đường dẫn /api/auth sẽ được xử lý bởi router authRoute

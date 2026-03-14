@@ -1,7 +1,9 @@
 import {create} from 'zustand'
 import {toast} from 'sonner'
+import { authService } from '@/services/authService'
+import type { AuthState } from '@/types/store'
 
-export const useAuthStore = ((set, get) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
     accessToken: null,
     user: null,
     loading: false,
@@ -9,7 +11,7 @@ export const useAuthStore = ((set, get) => ({
     signUp: async (username, password, email, firstname, lastname) => {
         try {
             set({loading: true})
-            // api
+            await authService.signUp(username, password, email, firstname, lastname)
             toast.success("Đăng kí thành công")
         } catch (error) {
             console.error(error);
@@ -17,5 +19,18 @@ export const useAuthStore = ((set, get) => ({
         } finally{
             set({loading: false})
         }
+    },
+
+    signIn: async (username, password) => {
+        try {
+            set({loading: true})
+            const {accessToken} = await authService.signIn(username, password)
+            set({accessToken})
+            toast.success("Đăng nhập thành công")
+        }catch(error){
+            console.error(error);
+            toast.error("Đăng nhập không thành công")
+        }
     }
+
 }))
